@@ -23,42 +23,54 @@ namespace Plane_Wars
     {
         private readonly DispatcherTimer _leftTimer;
         private readonly DispatcherTimer _rightTimer;
-        private const double _interval = 15d;
-        private const double _unitSpan = 2d;
+        private const double Interval = 15d;
+        private const double UnitSpan = 2d;
+        private readonly GameController _controller;
 
         public MainWindow()
         {
             InitializeComponent();
             _leftTimer = new DispatcherTimer();
             _rightTimer = new DispatcherTimer();
+            _controller=new GameController(Plane,Shell,new GameArgs
+            {
+                BorderWidth = 800,
+                BorderHeight = 600,
+                PlaneLocation = new Location {X=0,Y=0 },
+                PlaneRadius=25d,
+                CannonLocation= new Location { X = 400d, Y = 540 },
+                BarrelLength=80,
+                ShellRadius=10d
+            },this.Dispatcher);
             Prepare();
         }
 
         private void Prepare()
         {
-            _leftTimer.Interval = _rightTimer.Interval = TimeSpan.FromMilliseconds(_interval);
+            _leftTimer.Interval = _rightTimer.Interval = TimeSpan.FromMilliseconds(Interval);
             _leftTimer.Tick += (s, e) => TurnBarrelLeft();
             _rightTimer.Tick += (s, e) => TurnBarrelRight();
+            _controller.Loaded += (s, e) =>
+            {
+                Status.Text = "Loaded";
+            };
+            _controller.GameOver += (s, e) =>
+            {
+                Status.Text = "Game Over";
+            };
         }
 
-        private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            double x = 92.23d % 90d;
-            double result = Math.Tan(90 * (Math.PI / 180));
-            myTranslateTransform.X = myTranslateTransform.X + 15;
-            myTranslateTransform.Y = myTranslateTransform.Y + 15;
-        }
 
         private void TurnBarrelLeft()
         {
-            var angle = Barrel.Angle - _unitSpan;
+            var angle = Barrel.Angle - UnitSpan;
             if (angle < 0d)
                 angle += 360d;
             Barrel.Angle = angle;
         }
         private void TurnBarrelRight()
         {
-            var angle = Barrel.Angle + _unitSpan;
+            var angle = Barrel.Angle + UnitSpan;
             if (angle > 360d)
                 angle -= 360d;
             Barrel.Angle = angle;
@@ -84,6 +96,17 @@ namespace Plane_Wars
         private void TurnRightBtn_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             _rightTimer.Stop();
+        }
+
+        private void Start_OnClick(object sender, RoutedEventArgs e)
+        {
+            _controller.Start();
+        }
+
+        private void Fire_OnClick(object sender, RoutedEventArgs e)
+        {
+            Status.Text = "Reloading";
+            _controller.Fire(Barrel.Angle);
         }
     }
 }

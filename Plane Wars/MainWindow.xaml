@@ -6,26 +6,31 @@
         xmlns:local="clr-namespace:Plane_Wars"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="800">
-    <Grid Background="Cyan">
+    <Grid Background="Wheat">
         <StackPanel>
             <Canvas Background="Azure"
                     Height="600" Width="800">
-                <Rectangle MouseLeftButtonDown="Rectangle_MouseLeftButtonDown" 
-                           Width="50" Height="50" 
-                           Fill="RoyalBlue">
+                <Rectangle
+                           Width="50" Height="50" Fill="RoyalBlue">
                     <Rectangle.RenderTransform>
-                        <TranslateTransform x:Name="myTranslateTransform" />
+                        <TranslateTransform x:Name="Plane" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Rectangle Height="80" Width="16" Fill="Brown" RadiusX="8" RadiusY="8"
-                           Canvas.Bottom="40" Canvas.Left="400"
+                <Rectangle Height="80" Width="20" Fill="Brown" RadiusX="10" RadiusY="10"
+                           Canvas.Bottom="0" Canvas.Left="400"
                            HorizontalAlignment="Center" VerticalAlignment="Bottom">
                     <Rectangle.RenderTransform>
                         <RotateTransform x:Name="Barrel"
-                                         CenterX="8" CenterY="72">
+                                         CenterX="10" CenterY="70">
                         </RotateTransform>
                     </Rectangle.RenderTransform>
                 </Rectangle>
+                <Ellipse Height="20" Width="20" Fill="Aqua"
+                         Canvas.Bottom="0" Canvas.Left="400">
+                    <Ellipse.RenderTransform>
+                        <TranslateTransform x:Name="Shell" />
+                    </Ellipse.RenderTransform>
+                </Ellipse>
             </Canvas>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Margin="8" x:Name="TurnLeftBtn" Content="Turn Left"
@@ -34,7 +39,12 @@
                 <Button Margin="8" x:Name="TurnRightBtn" Content="Turn Right"
                         PreviewMouseDown="TurnRightBtn_PreviewMouseDown"
                         PreviewMouseUp="TurnRightBtn_PreviewMouseUp"></Button>
+                <Button Content="Start" x:Name="Start" 
+                        Margin="8" Click="Start_OnClick"></Button>
+                <Button Content="FIre" x:Name="Fire" 
+                        Margin="8" Click="Fire_OnClick"></Button>
             </StackPanel>
+            <TextBlock x:Name="Status" TextAlignment="Center" Text="NULL"></TextBlock>
         </StackPanel>
     </Grid>
 </Window>

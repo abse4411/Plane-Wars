@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -27,9 +28,9 @@ namespace Plane_Wars
     class GameController
     {
         private const double Precision=1d;
-        private const int SleepSpan = 100;
+        private const int SleepSpan = 1000;
         private const double PlaneDelta = 15d;
-        private const double ShellDelta=10d;
+        private const double ShellDelta=0.001d;
         private readonly TranslateTransform _plane;
         private readonly TranslateTransform _shell;
         private readonly GameArgs _args;
@@ -71,6 +72,10 @@ namespace Plane_Wars
                     Task.WaitAll(_tasks);
                 }
             }
+            lock (_syncFire)
+            {
+                _canFire = true;
+            }
             _planeObject.MoveTo(_args.PlaneLocation);
             _shellObject.MoveTo(_args.CannonLocation);
             UpdatePlane();
@@ -84,8 +89,13 @@ namespace Plane_Wars
                 if(Status!=GameStatus.Ready)
                     throw new InvalidOperationException("Game is not in ready status");
                 Status = GameStatus.Running;
-                MovePlane();
             }
+            lock (_syncFire)
+            {
+                _canFire = true;
+            }
+            MovePlane();
+            OnLoaded();
         }
 
         private void MovePlane()
@@ -131,9 +141,14 @@ namespace Plane_Wars
                 _canFire = false;
             }
             double radians = angle * (Math.PI / 180);
-            _shellObject.Dx = _args.BarrelLength * Math.Sin(radians) * ShellDelta;
-            _shellObject.Dy = _args.BarrelLength * Math.Cos(radians) * ShellDelta;
-            _shellObject.MoveTo(_args.CannonLocation);
+            _shellObject.Dx = _args.BarrelLength * Math.Sin(radians) ;
+            _shellObject.Dy =- _args.BarrelLength * Math.Cos(radians) ;
+            _shellObject.MoveTo( _shellObject.Dx,_shellObject.Dy);
+            _shellObject.Dx *= ShellDelta;
+            _shellObject.Dy *= ShellDelta;
+            UpdateShell();
+            Debug.WriteLine($"X: {_shellObject.Location.X} Y:{_shellObject.Location.Y}");
+            Debug.WriteLine($"DX: {_shellObject.Dx} DY:{_shellObject.Dy}");
             _tasks[1]=Task.Run(() =>
             {
                 while (true)
@@ -143,6 +158,7 @@ namespace Plane_Wars
                     if (Status == GameStatus.Running)
                     {
                         _shellObject.Move();
+                        Debug.WriteLine($"X: {_shellObject.Location.X} Y:{_shellObject.Location.Y}");
                         if (_shellObject.Location.X<=-2*_args.ShellRadius || _shellObject.Location.X>=_args.BorderWidth ||
                             _shellObject.Location.Y<=-2*_args.ShellRadius || _shellObject.Location.Y>=_args.BorderHeight)
                         {
