@@ -20,17 +20,17 @@ namespace Plane_Wars
         public double BorderWidth;
         public double BorderHeight;
         public Location PlaneLocation;
+        public Location ShellLocation;
         public double PlaneRadius;
-        public Location CannonLocation;
         public double BarrelLength;
         public double ShellRadius;
     }
     class GameController
     {
         private const double Precision=1d;
-        private const int SleepSpan = 1000;
-        private const double PlaneDelta = 15d;
-        private const double ShellDelta=0.001d;
+        private const int SleepSpan = 20;
+        private const double PlaneDelta = 2d;
+        private const double ShellDelta=1d;
         private readonly TranslateTransform _plane;
         private readonly TranslateTransform _shell;
         private readonly GameArgs _args;
@@ -56,10 +56,9 @@ namespace Plane_Wars
             _planeObject =new MobileObject();
             _shellObject = new MobileObject();
             Status = GameStatus.Ready;
-            _planeObject.MoveTo(args.PlaneLocation);
             _planeObject.Dx = PlaneDelta;
             _planeObject.Dy = 0d;
-            _shellObject.MoveTo(args.CannonLocation);
+            ResetLocation();
         }
 
         public void Reset()
@@ -76,10 +75,15 @@ namespace Plane_Wars
             {
                 _canFire = true;
             }
-            _planeObject.MoveTo(_args.PlaneLocation);
-            _shellObject.MoveTo(_args.CannonLocation);
+            ResetLocation();
             UpdatePlane();
             UpdateShell();
+        }
+
+        private void ResetLocation()
+        {
+            _planeObject.MoveTo(0, 0);
+            _shellObject.MoveTo(0, 0);
         }
 
         public void Start()
@@ -94,6 +98,7 @@ namespace Plane_Wars
             {
                 _canFire = true;
             }
+            ResetLocation();
             MovePlane();
             OnLoaded();
         }
@@ -110,14 +115,16 @@ namespace Plane_Wars
                     if (Status == GameStatus.Running)
                     {
                         _planeObject.Move();
-                        double rx = (_planeObject.Location.X +_args.PlaneRadius- (_shellObject.Location.X+_args.ShellRadius));
-                        double ry = (_planeObject.Location.Y + _args.PlaneRadius -(_shellObject.Location.Y+ _args.ShellRadius));
+                        double rx = (_args.PlaneLocation.X+_planeObject.Location.X +_args.PlaneRadius
+                                     - (_shellObject.Location.X+ _args.ShellRadius+ _args.ShellLocation.X));
+                        double ry = (_args.PlaneLocation.Y+_planeObject.Location.Y + _args.PlaneRadius 
+                                     -(_shellObject.Location.Y+ _args.ShellRadius+ _args.ShellLocation.Y));
                         if (Math.Abs(distance-(rx*rx+ry*ry)) <Precision)
                         {
                             OnGameOver();
                             return Task.CompletedTask;
                         }
-                        if (_planeObject.Location.X >= _args.BorderWidth)
+                        if (_planeObject.Location.X +_args.PlaneLocation.X>= _args.BorderWidth)
                         {
                             _planeObject.MoveTo(-2*_args.PlaneRadius,_planeObject.Location.Y);
                         }
@@ -151,6 +158,7 @@ namespace Plane_Wars
             Debug.WriteLine($"DX: {_shellObject.Dx} DY:{_shellObject.Dy}");
             _tasks[1]=Task.Run(() =>
             {
+                double negDiameter = -2d * _args.ShellRadius;
                 while (true)
                 {
                     if (Status == GameStatus.Ready)
@@ -158,10 +166,12 @@ namespace Plane_Wars
                     if (Status == GameStatus.Running)
                     {
                         _shellObject.Move();
-                        Debug.WriteLine($"X: {_shellObject.Location.X} Y:{_shellObject.Location.Y}");
-                        if (_shellObject.Location.X<=-2*_args.ShellRadius || _shellObject.Location.X>=_args.BorderWidth ||
-                            _shellObject.Location.Y<=-2*_args.ShellRadius || _shellObject.Location.Y>=_args.BorderHeight)
+                        //Debug.WriteLine($"X: {_shellObject.Location.X} Y:{_shellObject.Location.Y}");
+                        if (_shellObject.Location.X+_args.ShellLocation.X<= negDiameter || _shellObject.Location.X+ _args.ShellLocation.X >= _args.BorderWidth ||
+                            _shellObject.Location.Y + _args.ShellLocation.Y <= negDiameter || _shellObject.Location.Y+_args.ShellLocation.Y >= _args.BorderHeight)
                         {
+                            Debug.WriteLine($"X: {_shellObject.Location.X} Y:{_shellObject.Location.Y}");
+                            Debug.WriteLine($"DX: {_shellObject.Dx} DY:{_shellObject.Dy}");
                             OnLoaded();
                             return Task.CompletedTask;
                         }

@@ -11,13 +11,13 @@
             <Canvas Background="Azure"
                     Height="600" Width="800">
                 <Rectangle
-                           Width="50" Height="50" Fill="RoyalBlue">
+                           Width="80" Height="80" Fill="RoyalBlue">
                     <Rectangle.RenderTransform>
                         <TranslateTransform x:Name="Plane" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
                 <Rectangle Height="80" Width="20" Fill="Brown" RadiusX="10" RadiusY="10"
-                           Canvas.Bottom="0" Canvas.Left="400"
+                           Canvas.Top="500" Canvas.Left="400"
                            HorizontalAlignment="Center" VerticalAlignment="Bottom">
                     <Rectangle.RenderTransform>
                         <RotateTransform x:Name="Barrel"
@@ -26,7 +26,7 @@
                     </Rectangle.RenderTransform>
                 </Rectangle>
                 <Ellipse Height="20" Width="20" Fill="Aqua"
-                         Canvas.Bottom="0" Canvas.Left="400">
+                         Canvas.Top="560" Canvas.Left="400">
                     <Ellipse.RenderTransform>
                         <TranslateTransform x:Name="Shell" />
                     </Ellipse.RenderTransform>

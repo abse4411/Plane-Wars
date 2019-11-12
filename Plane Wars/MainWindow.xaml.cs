@@ -34,12 +34,12 @@ namespace Plane_Wars
             _rightTimer = new DispatcherTimer();
             _controller=new GameController(Plane,Shell,new GameArgs
             {
-                BorderWidth = 800,
-                BorderHeight = 600,
-                PlaneLocation = new Location {X=0,Y=0 },
-                PlaneRadius=25d,
-                CannonLocation= new Location { X = 400d, Y = 540 },
-                BarrelLength=80,
+                BorderWidth = 800d,
+                BorderHeight = 600d,
+                PlaneLocation = new Location {X=0d,Y=0d },
+                ShellLocation = new Location { X = 400d, Y = 560d },
+                PlaneRadius =40d,
+                BarrelLength=80d,
                 ShellRadius=10d
             },this.Dispatcher);
             Prepare();
