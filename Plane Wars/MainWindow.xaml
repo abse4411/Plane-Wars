@@ -4,20 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Plane_Wars"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
+        mc:Ignorable="d" MinHeight="720" MinWidth="800"
+        Title="MainWindow" Height="720" Width="800">
     <Grid Background="Wheat">
         <StackPanel>
             <Canvas Background="Azure"
                     Height="600" Width="800">
-                <Rectangle
-                           Width="80" Height="80" Fill="RoyalBlue">
+                <Ellipse Height="50" Width="50" Fill="#222"
+                         Canvas.Top="545" Canvas.Left="385">
+                    <Ellipse.RenderTransform>
+                        <TranslateTransform />
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Rectangle 
+                           Width="64" Height="64" >
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="./fighter-jet-silhouette.png"/>
+                    </Rectangle.Fill>
                     <Rectangle.RenderTransform>
                         <TranslateTransform x:Name="Plane" />
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Rectangle Height="80" Width="20" Fill="Brown" RadiusX="10" RadiusY="10"
-                           Canvas.Top="500" Canvas.Left="400"
+                <Rectangle Height="80" Width="20" RadiusX="10" RadiusY="10"
+                           Canvas.Top="500" Canvas.Left="400" Fill="Black"
                            HorizontalAlignment="Center" VerticalAlignment="Bottom">
                     <Rectangle.RenderTransform>
                         <RotateTransform x:Name="Barrel"
@@ -25,7 +34,7 @@
                         </RotateTransform>
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Ellipse Height="20" Width="20" Fill="Aqua"
+                <Ellipse Height="20" Width="20" Fill="Black"
                          Canvas.Top="560" Canvas.Left="400">
                     <Ellipse.RenderTransform>
                         <TranslateTransform x:Name="Shell" />
@@ -36,15 +45,23 @@
                 <Button Margin="8" x:Name="TurnLeftBtn" Content="Turn Left"
                         PreviewMouseDown="TurnLeftBtn_PreviewMouseDown"
                         PreviewMouseUp="TurnLeftBtn_PreviewMouseUp"/>
+                <Button Content="Fire" x:Name="Fire"  IsEnabled="False" 
+                        Margin="8" Click="Fire_OnClick"></Button>
                 <Button Margin="8" x:Name="TurnRightBtn" Content="Turn Right"
                         PreviewMouseDown="TurnRightBtn_PreviewMouseDown"
                         PreviewMouseUp="TurnRightBtn_PreviewMouseUp"></Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Start" x:Name="Start" 
                         Margin="8" Click="Start_OnClick"></Button>
-                <Button Content="FIre" x:Name="Fire" 
-                        Margin="8" Click="Fire_OnClick"></Button>
+                <Button x:Name="Pause" Content="Pause" Click="Pause_Click"
+                        IsEnabled="False" Margin="8"></Button>
+                <Button x:Name="Continue" Content="Continue" Click="Continue_Click"
+                         IsEnabled="False" Margin="8"></Button>
+                <Button x:Name="Reset" Content="Reset" Click="Reset_Click"
+                        Margin="8"></Button>
             </StackPanel>
-            <TextBlock x:Name="Status" TextAlignment="Center" Text="NULL"></TextBlock>
+            <TextBlock x:Name="Status" TextAlignment="Center" Text="Ready"></TextBlock>
         </StackPanel>
     </Grid>
 </Window>

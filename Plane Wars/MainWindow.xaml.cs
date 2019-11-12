@@ -38,7 +38,7 @@ namespace Plane_Wars
                 BorderHeight = 600d,
                 PlaneLocation = new Location {X=0d,Y=0d },
                 ShellLocation = new Location { X = 400d, Y = 560d },
-                PlaneRadius =40d,
+                PlaneRadius =32d,
                 BarrelLength=80d,
                 ShellRadius=10d
             },this.Dispatcher);
@@ -52,10 +52,15 @@ namespace Plane_Wars
             _rightTimer.Tick += (s, e) => TurnBarrelRight();
             _controller.Loaded += (s, e) =>
             {
+                Fire.IsEnabled = true;
                 Status.Text = "Loaded";
             };
             _controller.GameOver += (s, e) =>
             {
+                Start.IsEnabled = true;
+                Pause.IsEnabled = false;
+                Continue.IsEnabled = false;
+                Fire.IsEnabled = false;
                 Status.Text = "Game Over";
             };
         }
@@ -100,13 +105,49 @@ namespace Plane_Wars
 
         private void Start_OnClick(object sender, RoutedEventArgs e)
         {
+            Start.IsEnabled = false;
+            Pause.IsEnabled = true;
+            Continue.IsEnabled = false;
+            Status.Text = "Running";
             _controller.Start();
         }
 
         private void Fire_OnClick(object sender, RoutedEventArgs e)
         {
+            Fire.IsEnabled = false;
             Status.Text = "Reloading";
             _controller.Fire(Barrel.Angle);
+        }
+
+        private void Pause_Click(object sender, RoutedEventArgs e)
+        {
+            Pause.IsEnabled = false;
+            Continue.IsEnabled = true;
+            Fire.IsEnabled = false;
+            Status.Text = "Pausing";
+            _controller.Pause();
+        }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            Start.IsEnabled = true;
+            Pause.IsEnabled = false;
+            Continue.IsEnabled = false;
+            Fire.IsEnabled = false;
+            Status.Text = "Ready";
+            _controller.Reset();
+        }
+
+        private void Continue_Click(object sender, RoutedEventArgs e)
+        {
+            Pause.IsEnabled = true;
+            Continue.IsEnabled = false;
+            if(_controller.CanFire)
+                Fire.IsEnabled = true;
+            else
+                Fire.IsEnabled = false;
+            Status.Text = "Running";
+            _controller.Continue();
         }
     }
 }
