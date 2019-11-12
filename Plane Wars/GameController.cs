@@ -167,8 +167,8 @@ namespace Plane_Wars
                     {
                         _shellObject.Move();
                         //Debug.WriteLine($"X: {_shellObject.Location.X} Y:{_shellObject.Location.Y}");
-                        if (_shellObject.Location.X+_args.ShellLocation.X<= negDiameter || _shellObject.Location.X+ _args.ShellLocation.X >= _args.BorderWidth ||
-                            _shellObject.Location.Y + _args.ShellLocation.Y <= negDiameter || _shellObject.Location.Y+_args.ShellLocation.Y >= _args.BorderHeight)
+                        if (_shellObject.Location.X+_args.ShellLocation.X +_args.BorderWidth<= negDiameter || _shellObject.Location.X+ _args.ShellLocation.X >= _args.BorderWidth ||
+                            _shellObject.Location.Y + _args.ShellLocation.Y+ _args.BorderWidth <= negDiameter || _shellObject.Location.Y+_args.ShellLocation.Y >= _args.BorderHeight)
                         {
                             Debug.WriteLine($"X: {_shellObject.Location.X} Y:{_shellObject.Location.Y}");
                             Debug.WriteLine($"DX: {_shellObject.Dx} DY:{_shellObject.Dy}");
