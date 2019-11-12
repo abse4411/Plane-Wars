@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Plane_Wars"
-        mc:Ignorable="d" MinHeight="720" MinWidth="800"
-        Title="MainWindow" Height="720" Width="800">
-    <Grid Background="Wheat">
+        mc:Ignorable="d" MinHeight="740" MinWidth="810"
+        Title="Plane Wars" Height="740" Width="810" MaxWidth="800" MaxHeight="717">
+    <Grid Background="Snow">
         <StackPanel>
-            <Canvas Background="Azure"
+            <Canvas Background="PapayaWhip" ClipToBounds="True"
                     Height="600" Width="800">
-                <Ellipse Height="50" Width="50" Fill="#222"
+                <Ellipse Height="50" Width="50" Fill="Black"
                          Canvas.Top="545" Canvas.Left="385">
                     <Ellipse.RenderTransform>
                         <TranslateTransform />
@@ -19,7 +19,7 @@
                 <Rectangle 
                            Width="64" Height="64" >
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource="./fighter-jet-silhouette.png"/>
+                        <ImageBrush ImageSource="./jet-plane.png"/>
                     </Rectangle.Fill>
                     <Rectangle.RenderTransform>
                         <TranslateTransform x:Name="Plane" />
@@ -61,7 +61,9 @@
                 <Button x:Name="Reset" Content="Reset" Click="Reset_Click"
                         Margin="8"></Button>
             </StackPanel>
-            <TextBlock x:Name="Status" TextAlignment="Center" Text="Ready"></TextBlock>
+            <TextBlock x:Name="Status" FontSize="24" TextAlignment="Center" Text="Ready" HorizontalAlignment="Center"></TextBlock>
         </StackPanel>
+        <Button Margin="8" x:Name="Credits" Content="Credits" Click="Credits_OnClick"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" />
     </Grid>
 </Window>

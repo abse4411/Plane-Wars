@@ -24,9 +24,8 @@ namespace Plane_Wars
     }
     class GameController
     {
-        private const double Precision = 2d;
-        private const int SleepSpan = 20;
-        private const double PlaneDelta = 15d;
+        private const int SleepSpan = 30;
+        private const double PlaneDelta = 20d;
         private const double ShellDelta = 0.1d;
         private readonly TranslateTransform _plane;
         private readonly TranslateTransform _shell;
@@ -98,6 +97,7 @@ namespace Plane_Wars
             _tasks[0] = Task.Run(() =>
              {
                  double distance = (_args.ShellRadius + _args.PlaneRadius) * (_args.ShellRadius + _args.PlaneRadius);
+                 distance -= 2*_args.ShellRadius * _args.PlaneRadius;
                  while (true)
                  {
                      if (Status == GameStatus.Ready)
@@ -166,6 +166,8 @@ namespace Plane_Wars
                                   //Debug.WriteLine($"ShellLocation.X: {_args.ShellLocation.X} ShellLocation.Y:{_args.ShellLocation.Y}");
                                   //Debug.WriteLine($"BorderWidth: {_args.BorderWidth} BorderHeight:{_args.BorderHeight}");
                                   //Debug.WriteLine($"DX: {_shellObject.Dx} DY:{_shellObject.Dy}");
+                                  _shellObject.MoveTo(0, 0);
+                                  UpdateShell();
                                   OnLoaded();
                                   return Task.CompletedTask;
                               }

@@ -23,7 +23,7 @@ namespace Plane_Wars
     {
         private readonly DispatcherTimer _leftTimer;
         private readonly DispatcherTimer _rightTimer;
-        private const double Interval = 15d;
+        private const double Interval = 25d;
         private const double UnitSpan = 2d;
         private readonly GameController _controller;
 
@@ -69,15 +69,15 @@ namespace Plane_Wars
         private void TurnBarrelLeft()
         {
             var angle = Barrel.Angle - UnitSpan;
-            if (angle < 0d)
-                angle += 360d;
+            if (angle < -90d)
+                angle = -90d;
             Barrel.Angle = angle;
         }
         private void TurnBarrelRight()
         {
             var angle = Barrel.Angle + UnitSpan;
-            if (angle > 360d)
-                angle -= 360d;
+            if (angle > 90d)
+                angle = 90d;
             Barrel.Angle = angle;
         }
 
@@ -148,6 +148,13 @@ namespace Plane_Wars
                 Fire.IsEnabled = false;
             Status.Text = "Running";
             _controller.Continue();
+        }
+
+        //<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        private void Credits_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Icons made by Freepik from www.flaticon.com", "Credits", MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
     }
 }
