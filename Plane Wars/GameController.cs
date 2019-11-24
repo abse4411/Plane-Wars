@@ -144,8 +144,6 @@ namespace Plane_Wars
                 _shellObject.Dx *= ShellDelta;
                 _shellObject.Dy *= ShellDelta;
                 UpdateShell();
-                Debug.WriteLine($"X: {_shellObject.Location.X} Y:{_shellObject.Location.Y}");
-                Debug.WriteLine($"DX: {_shellObject.Dx} DY:{_shellObject.Dy}");
                 _tasks[1] = Task.Run(() =>
                   {
                       double negDiameter = -2d * _args.ShellRadius;
@@ -157,15 +155,9 @@ namespace Plane_Wars
                           {
                               _shellObject.Move();
                               UpdateShell();
-                              //Debug.WriteLine($"X: {_shellObject.Location.X} Y:{_shellObject.Location.Y}");
                               if (_shellObject.Location.X + _args.ShellLocation.X <= negDiameter || _shellObject.Location.X + _args.ShellLocation.X >= _args.BorderWidth ||
                                         _shellObject.Location.Y + _args.ShellLocation.Y <= negDiameter || _shellObject.Location.Y + _args.ShellLocation.Y >= _args.BorderHeight)
                               {
-                                  //Debug.WriteLine("++++++++++++++++++++++");
-                                  //Debug.WriteLine($"X: {_shellObject.Location.X } Y:{_shellObject.Location.Y }");
-                                  //Debug.WriteLine($"ShellLocation.X: {_args.ShellLocation.X} ShellLocation.Y:{_args.ShellLocation.Y}");
-                                  //Debug.WriteLine($"BorderWidth: {_args.BorderWidth} BorderHeight:{_args.BorderHeight}");
-                                  //Debug.WriteLine($"DX: {_shellObject.Dx} DY:{_shellObject.Dy}");
                                   _shellObject.MoveTo(0, 0);
                                   UpdateShell();
                                   OnLoaded();
